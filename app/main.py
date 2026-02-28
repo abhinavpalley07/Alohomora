@@ -1,24 +1,20 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from .database import engine, Base
 from .routes import parking, ocr, notify
-
-# Create database tables
-Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
     title="ZYPARK API",
-    description="Smart Parking Discovery & Conflict Resolution Platform",
-    version="1.0.0"
+    description="Smart Parking Discovery & Conflict Resolution Platform (MongoDB)",
+    version="2.0.0"
 )
 
-# Configure CORS (Open for hackathon development)
+# Configure CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Allows all origins
+    allow_origins=["*"],
     allow_credentials=True,
-    allow_methods=["*"],  # Allows all methods
-    allow_headers=["*"],  # Allows all headers
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 # Include Routers
@@ -28,4 +24,4 @@ app.include_router(notify.router, prefix="/notify", tags=["Notifications"])
 
 @app.get("/")
 def root():
-    return {"message": "Welcome to ZYPARK API. Visit /docs for documentation."}
+    return {"message": "Welcome to ZYPARK API (MongoDB Edition). Visit /docs for documentation."}

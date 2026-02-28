@@ -1,25 +1,20 @@
 from fastapi import APIRouter, Depends
-from sqlalchemy.orm import Session
 from typing import List
-from ..database import get_db
 from ..schemas import NearbyParkingRequest, ParkingSpot
 import math
 
 router = APIRouter()
 
-# Mock function to calculate distance (Haversine formula simplified)
+# Mock function to calculate distance
 def calculate_distance(lat1, lon1, lat2, lon2):
-    return round(math.sqrt((lat1 - lat2)**2 + (lon1 - lon2)**2) * 111, 2) # Rough km conversion
+    return round(math.sqrt((lat1 - lat2)**2 + (lon1 - lon2)**2) * 111, 2)
 
 @router.post("/nearby", response_model=List[ParkingSpot])
-def get_nearby_parking(
-    request: NearbyParkingRequest, 
-    db: Session = Depends(get_db)
-):
+def get_nearby_parking(request: NearbyParkingRequest):
     """
     Mock API to return nearby parking spots based on lat/long.
+    (Logic unchanged as it uses mock data)
     """
-    # Mock Data for Hackathon
     mock_spots = [
         {"name": "Central Mall Parking", "lat": request.latitude + 0.01, "lon": request.longitude + 0.01, "available": 5},
         {"name": "Street Side Spot A", "lat": request.latitude - 0.005, "lon": request.longitude + 0.002, "available": 1},
@@ -37,6 +32,5 @@ def get_nearby_parking(
             distance_km=dist
         ))
     
-    # Sort by distance
     results.sort(key=lambda x: x.distance_km)
     return results

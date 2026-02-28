@@ -11,7 +11,7 @@ class VehicleCreate(VehicleBase):
     contact_info: Optional[str] = None
 
 class Vehicle(VehicleBase):
-    id: int
+    id: str  # Changed from int to str (MongoDB ObjectId string)
     owner_name: str
     contact_info: str
 
@@ -27,8 +27,8 @@ class NotificationCreate(NotificationBase):
     pass
 
 class NotificationResponse(BaseModel):
-    id: int
-    vehicle_id: int
+    id: str  # Changed from int to str
+    vehicle_number: str
     location: str
     status: str
     eta: Optional[int] = None
@@ -57,5 +57,5 @@ class ParkingSpot(BaseModel):
     distance_km: float
 
 class NotifyRespondRequest(BaseModel):
-    notification_id: int
+    notification_id: str  # Changed from int to str
     eta: int  # 2, 5, or 10 minutes

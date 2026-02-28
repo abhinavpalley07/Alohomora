@@ -1,26 +1,14 @@
-from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+import os
+from motor.motor_asyncio import AsyncIOMotorClient
 
-# Using SQLite for simple local storage
-SQLALCHEMY_DATABASE_URL = "sqlite:///./ZYPARK.db"
-
-# Create the engine
-# check_same_thread is needed only for SQLite
-engine = create_engine(
-    SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False}
+MONGO_URI = os.getenv(
+    "MONGO_URI",
+    "mongodb+srv://unguraladheekshith_db_user:2350T1iazhDPKj2z@cluster0.ejm6xsr.mongodb.net/?retryWrites=true&w=majority"
 )
 
-# Create a SessionLocal class
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+client = AsyncIOMotorClient(MONGO_URI)
 
-# Create a Base class for models to inherit from
-Base = declarative_base()
+db = client["zypark_db"]
 
-# Dependency to get the DB session in routes
 def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
+    return db
